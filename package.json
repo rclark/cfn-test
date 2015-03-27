@@ -1,0 +1,43 @@
+{
+  "name": "cfn-test",
+  "version": "0.0.1",
+  "description": "Create and destroy CloudFormation stacks for use in tape tests",
+  "main": "index.js",
+  "scripts": {
+    "pretest": "jshint index.js test && jscs index.js test",
+    "test": "tape test/*.test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rclark/cfn-test.git"
+  },
+  "keywords": [
+    "CloudFormation",
+    "AWS",
+    "testing"
+  ],
+  "author": "Ryan Clark",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rclark/cfn-test/issues"
+  },
+  "homepage": "https://github.com/rclark/cfn-test",
+  "devDependencies": {
+    "jscs": "^1.11.3",
+    "jshint": "^2.6.3"
+  },
+  "jscsConfig": {
+    "preset": "airbnb"
+  },
+  "jshint": {
+    "node": true,
+    "globalstrict": false,
+    "undef": true,
+    "unused": true,
+    "noarg": true
+  },
+  "dependencies": {
+    "aws-sdk": "^2.1.18",
+    "tape": "^3.5.0"
+  }
+}
