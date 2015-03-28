@@ -14,6 +14,8 @@ module.exports = function(projectName, region) {
 
   cfnTest.start = function(template) {
     test('[cfn-test] start stack', function(assert) {
+      assert.timeoutAfter(300000);
+
       check(cfn, cfnTest.stackName, function(err, status) {
         if (err) throw err;
         if (status) return assert.end();
@@ -35,6 +37,8 @@ module.exports = function(projectName, region) {
 
   cfnTest.delete = function() {
     test('[cfn-test] delete stack', function(assert) {
+      assert.timeoutAfter(300000);
+
       remove(cfn, cfnTest.stackName, function(err) {
         if (err) throw err;
         assert.end();
@@ -81,15 +85,16 @@ function create(cfn, stackName, template, callback) {
     params.TemplateUrl = template;
   }
 
+  function done(err, status) {
+    if (err) return callback(err);
+    if (!status) return callback(new Error('Stack creation failed'));
+    if (status !== 'CREATE_COMPLETE') return setTimeout(check, 10000, cfn, stackName, done);
+    return callback();
+  }
+
   cfn.createStack(params, function(err) {
     if (err) return callback(err);
-
-    check(cfn, stackName, function(err, status) {
-      if (err) return callback(err);
-      if (!status) return callback(new Error('Stack creation failed'));
-      if (status !== 'CREATE_COMPLETE') return setTimeout(check, 10000, cfn, stackName, callback);
-      return callback();
-    });
+    check(cfn, stackName, done);
   });
 }
 
@@ -97,11 +102,13 @@ function remove(cfn, stackName, callback) {
   cfn.deleteStack({ StackName: stackName }, function(err, data) {
     if (err) return callback(err);
 
-    check(cfn, stackName, function(err, status) {
+    function done(err, status) {
       if (err) return callback(err);
       if (!status) return callback();
-      if (status !== 'DELETE_COMPLETE') return setTimeout(check, 10000, cfn, stackName, callback);
+      if (status !== 'DELETE_COMPLETE') return setTimeout(check, 10000, cfn, stackName, done);
       return callback();
-    });
+    }
+
+    check(cfn, stackName, done);
   });
 }

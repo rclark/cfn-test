@@ -18,6 +18,7 @@ test('starts the stack', function(assert) {
   cfn.describeStacks({ StackName: cfnTest.stackName }, function(err, data) {
     assert.ifError(err, 'stack exists');
     assert.deepEqual(cfnTest.description, data.Stacks[0], 'cached stack description');
+    assert.equal(data.Stacks[0].StackStatus, 'CREATE_COMPLETE', 'stack is created');
     assert.end();
   });
 });
