@@ -11,7 +11,11 @@ var test = require('tape');
 var cfnTest = require('cfn-test')('my-test-project', 'us-east-1');
 var myCfnTemplate = require('./template.json');
 
-cfnTest.start(myCfnTemplate);
+var parameters = {
+  SomeParameter: 'someValue'
+};
+
+cfnTest.start(myCfnTemplate, parameters);
 
 test('my test', function(assert) {
   // .. interact with your stack and make assertions
@@ -31,9 +35,9 @@ Configure the `cfnTest` object by providing an arbitrary name for your project a
 
 Returns the name of your test stack.
 
-**cfnTest.start(template)**
+**cfnTest.start(template, parameters)**
 
-Start your stack by either providing the template body (as a JavaScript object or a JSON string), or the template's URL on S3.
+Start your stack by either providing the template body (as a JavaScript object or a JSON string), or the template's URL on S3. Optionally, provide parameters to pass to your stack.
 
 **cfnTest.description**
 

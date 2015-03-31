@@ -12,7 +12,7 @@ module.exports = function(projectName, region) {
     crypto.randomBytes(4).toString('hex')
   ].join('-');
 
-  cfnTest.start = function(template) {
+  cfnTest.start = function(template, parameters) {
     test('[cfn-test] start stack', function(assert) {
       assert.timeoutAfter(300000);
 
@@ -21,7 +21,7 @@ module.exports = function(projectName, region) {
         if (status) return assert.end();
 
         assert.pass('Creating CloudFormation stack: ' + cfnTest.stackName);
-        create(cfn, cfnTest.stackName, template, function(err) {
+        create(cfn, cfnTest.stackName, template, parameters, function(err) {
           if (err) throw err;
 
           describe(cfn, cfnTest.stackName, function(err, description) {
@@ -69,11 +69,22 @@ function describe(cfn, stackName, callback) {
   });
 }
 
-function create(cfn, stackName, template, callback) {
+function create(cfn, stackName, template, parameters, callback) {
+  parameters = parameters || {};
+
+  parameters = Object.keys(parameters).map(function(param) {
+    return {
+      ParameterKey: param,
+      ParameterValue: parameters[param],
+      UsePreviousValue: true
+    };
+  });
+
   var params = {
     StackName: stackName,
     Capabilities: ['CAPABILITY_IAM'],
-    OnFailure: 'DELETE'
+    OnFailure: 'DELETE',
+    Parameters: parameters
   };
 
   if (typeof template === 'object') template = JSON.stringify(template);

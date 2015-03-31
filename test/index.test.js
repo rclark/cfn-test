@@ -6,7 +6,7 @@ var template = require('./template.json');
 var AWS = require('aws-sdk');
 var cfn = new AWS.CloudFormation({ region: 'us-east-1' });
 
-cfnTest.start(template);
+cfnTest.start(template, { TestParameter: 'test-indeed' });
 
 test('stack name', function(assert) {
   var re = new RegExp('test-' + project + '-[a-zA-Z0-9]{8}');

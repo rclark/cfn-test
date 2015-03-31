@@ -1,6 +1,11 @@
 {
     "AWSTemplateFormatVersion": "2010-09-09",
     "Description": "cfn-test test template",
+    "Parameters": {
+        "TestParameter": {
+            "Type": "String"
+        }
+    },
     "Resources": {
         "TestSNS": {
             "Type": "AWS::SNS::Topic",
