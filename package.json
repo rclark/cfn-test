@@ -24,7 +24,8 @@
   "homepage": "https://github.com/rclark/cfn-test",
   "devDependencies": {
     "jscs": "^1.11.3",
-    "jshint": "^2.6.3"
+    "jshint": "^2.6.3",
+    "tape": "^4.0.0"
   },
   "jscsConfig": {
     "preset": "airbnb"
@@ -37,7 +38,6 @@
     "noarg": true
   },
   "dependencies": {
-    "aws-sdk": "^2.1.18",
-    "tape": "^3.5.0"
+    "aws-sdk": "^2.1.18"
   }
 }

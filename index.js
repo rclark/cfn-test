@@ -1,8 +1,7 @@
 var crypto = require('crypto');
 var AWS = require('aws-sdk');
-var test = require('tape');
 
-module.exports = function(projectName, region) {
+module.exports = function(test, projectName, region) {
   var cfnTest = {};
   var cfn = new AWS.CloudFormation({ region: region });
 
@@ -51,7 +50,7 @@ module.exports = function(projectName, region) {
 
 function check(cfn, stackName, callback) {
   cfn.describeStacks({ StackName: stackName }, function(err, data) {
-    if (err && err.message === 'Stack:' + stackName + ' does not exist')
+    if (err && err.message === 'Stack with id ' + stackName + ' does not exist')
       return callback();
     if (err) return callback(err);
     if (!data.Stacks.length) return callback();

@@ -1,7 +1,7 @@
 var test = require('tape');
 var crypto = require('crypto');
 var project = crypto.randomBytes(4).toString('hex');
-var cfnTest = require('..')(project, 'us-east-1');
+var cfnTest = require('..')(test, project, 'us-east-1');
 var template = require('./template.json');
 var AWS = require('aws-sdk');
 var cfn = new AWS.CloudFormation({ region: 'us-east-1' });
@@ -28,7 +28,7 @@ cfnTest.delete();
 test('deletes the stack', function(assert) {
   cfn.describeStacks({ StackName: cfnTest.stackName }, function(err, data) {
     assert.ok(err, 'expected error when looking for the stack');
-    assert.equal(err.message, 'Stack:' + cfnTest.stackName + ' does not exist', 'expected error message');
+    assert.equal(err.message, 'Stack with id ' + cfnTest.stackName + ' does not exist', 'expected error message');
     assert.equal(err.code, 'ValidationError', 'expected error code');
     if (!err) console.log(data);
     assert.end();
