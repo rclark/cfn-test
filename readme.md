@@ -8,7 +8,7 @@ Wraps ansychronous create / delete calls in tape test functions so that you can 
 
 ```js
 var test = require('tape');
-var cfnTest = require('cfn-test')('my-test-project', 'us-east-1');
+var cfnTest = require('cfn-test')(test, 'my-test-project', 'us-east-1');
 var myCfnTemplate = require('./template.json');
 
 var parameters = {
@@ -27,9 +27,9 @@ cfnTest.delete();
 
 ## API
 
-**var cfnTest = require('cfn-test')(projectName, region)**
+**var cfnTest = require('cfn-test')(tape, projectName, region)**
 
-Configure the `cfnTest` object by providing an arbitrary name for your project and the region to run the stack in.
+Configure the `cfnTest` object by providing a [tape](https://github.com/substack/tape) object, an arbitrary name for your project, and the region to run the stack in.
 
 **cfnTest.stackName**
 
